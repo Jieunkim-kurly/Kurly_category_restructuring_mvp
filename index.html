@@ -630,20 +630,7 @@ function renderList() {
   const list = document.getElementById('cat-list');
   list.innerHTML = '';
 
-  // ── 전체 항목
-  const isAllSelected = state.filters.size === 0;
-  const allEl = document.createElement('div');
-  allEl.className = 'l1-item';
-  allEl.innerHTML = `
-    <div class="l1-header" style="cursor:pointer">
-      <div class="l1-filter-zone" style="flex:1">
-        <div class="chk-btn ${isAllSelected ? 'on' : ''}"></div>
-        <div class="l1-name ${isAllSelected ? 'on' : ''}">전체</div>
-      </div>
-    </div>
-  `;
-  allEl.querySelector('.l1-header').addEventListener('click', onAllClick);
-  list.appendChild(allEl);
+
 
   DATA.forEach(l1 => {
     const isOpen = state.openL1 === l1.id;
