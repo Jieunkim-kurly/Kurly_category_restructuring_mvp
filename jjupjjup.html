@@ -147,17 +147,20 @@
 
     /* ── 히어로 compact ── */
     .hero {
-      padding: 14px 16px 12px;
-      background: linear-gradient(170deg, #f8edff 0%, #fff 55%);
+      padding: 10px 16px 10px;
+      background: #f8edff;
       border-bottom: 1px solid #f0f0f0;
-      display: flex; align-items: center; gap: 12px;
+      display: flex; align-items: center; gap: 10px;
     }
-    .hero-otter { width: 52px; height: 52px; flex-shrink: 0; }
+    .hero-otter {
+      width: 64px; height: 80px; flex-shrink: 0;
+      object-fit: contain; mix-blend-mode: multiply;
+    }
+    .hero-otter-fallback { width: 52px; height: 52px; flex-shrink: 0; }
     .hero-text { flex: 1; }
-    .hero-sub { font-size: 10px; color: #9B20C8; font-weight: 700; margin-bottom: 3px; }
-    .hero-main { font-size: 14px; color: #222; line-height: 1.45; }
+    .hero-sub { font-size: 10px; color: #9B20C8; font-weight: 700; margin-bottom: 2px; }
+    .hero-main { font-size: 13px; color: #222; line-height: 1.4; }
     .hero-main b { color: #5F0080; }
-    .hero-pills { display: flex; gap: 6px; margin-top: 8px; flex-wrap: wrap; }
     .pill {
       background: #f5f5f5; border-radius: 20px;
       padding: 4px 10px; font-size: 11px; color: #666;
@@ -165,30 +168,31 @@
     .pill b { color: #333; }
 
     /* ── 왜 유행? ── */
-    .why-section { padding: 16px 16px 14px; border-bottom: 6px solid #f5f5f5; }
+    .why-section { padding: 14px 16px 12px; border-bottom: 6px solid #f5f5f5; }
     .trend-badge {
       display: inline-flex; align-items: center; gap: 4px;
       background: #f0d6ff; color: #5F0080;
       font-size: 10px; font-weight: 700;
-      padding: 3px 9px; border-radius: 20px; margin-bottom: 8px;
+      padding: 3px 9px; border-radius: 20px; margin-bottom: 7px;
     }
-    .why-title { font-size: 15px; font-weight: 800; color: #111; margin-bottom: 7px; }
-    .why-desc { font-size: 13px; color: #555; line-height: 1.65; }
+    .why-title { font-size: 14px; font-weight: 800; color: #111; margin-bottom: 6px; }
+    .why-desc { font-size: 12px; color: #555; line-height: 1.6; }
+    .why-stats { display: flex; gap: 6px; margin-top: 10px; flex-wrap: wrap; }
 
     /* ── 레시피 ── */
-    .recipe-section { padding: 16px 16px 14px; border-bottom: 6px solid #f5f5f5; }
-    .section-title { font-size: 14px; font-weight: 700; color: #111; margin-bottom: 12px; }
-    .steps { display: flex; flex-direction: column; gap: 10px; }
-    .step { display: flex; gap: 10px; align-items: flex-start; }
+    .recipe-section { padding: 12px 16px 10px; border-bottom: 6px solid #f5f5f5; }
+    .section-title { font-size: 13px; font-weight: 700; color: #111; margin-bottom: 8px; }
+    .steps { display: flex; flex-direction: column; gap: 6px; }
+    .step { display: flex; gap: 8px; align-items: flex-start; }
     .step-num {
-      width: 22px; height: 22px; border-radius: 50%;
+      width: 18px; height: 18px; border-radius: 50%;
       background: #5F0080; color: #fff;
-      font-size: 11px; font-weight: 700;
+      font-size: 10px; font-weight: 700;
       display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0; margin-top: 1px;
+      flex-shrink: 0; margin-top: 2px;
     }
-    .step-text { font-size: 13px; color: #333; line-height: 1.6; }
-    .step-text b { color: #111; }
+    .step-text { font-size: 11px; color: #555; line-height: 1.55; }
+    .step-text b { color: #333; }
 
     /* ── 상품 카로셀 ── */
     .products-section { padding: 16px 0 14px; border-bottom: 6px solid #f5f5f5; }
@@ -222,12 +226,12 @@
     .prod-check {
       position: absolute; top: 6px; right: 6px;
       width: 22px; height: 22px; border-radius: 50%;
-      border: 1.5px solid #ddd; background: rgba(255,255,255,0.85);
+      border: 1.5px solid #ddd; background: rgba(255,255,255,0.9);
       display: flex; align-items: center; justify-content: center;
-      font-size: 11px; color: transparent;
-      cursor: pointer; transition: all 0.15s;
+      font-size: 12px; color: transparent;
+      cursor: pointer; transition: all 0.18s;
     }
-    .prod-check.checked { background: #5F0080; border-color: #5F0080; color: #fff; }
+    .prod-check.checked { background: #5F0080; border-color: #5F0080; color: #fff; font-weight: 700; }
     .prod-cart-row {
       position: absolute; bottom: 0; left: 0; right: 0;
       background: rgba(255,255,255,0.92);
@@ -435,7 +439,8 @@
 
     <!-- 쩝쩝박사 버블 -->
     <div class="jjup-bubble" id="bubble" onclick="scrollToDetail()">
-      <svg class="bubble-avatar" viewBox="0 0 60 60" id="svg-bubble"></svg>
+      <img src="./character.png" class="bubble-avatar" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" style="width:44px;height:44px;object-fit:contain;mix-blend-mode:multiply;flex-shrink:0">
+      <svg viewBox="0 0 60 60" id="svg-bubble" style="display:none;width:44px;height:44px;flex-shrink:0"></svg>
       <div class="bubble-text">
         <div class="bubble-name">🔬 쩝쩝박사</div>
         <div class="bubble-msg">요즘 <b>마늘쫑 비빔밥</b> 난리났어요!<br>레시피 + 재료 바로 볼까요? →</div>
@@ -467,7 +472,7 @@
   <!-- 상세 헤더 -->
   <div class="detail-header">
     <span class="back-btn">←</span>
-    <svg width="26" height="26" viewBox="0 0 60 60" id="svg-header"></svg>
+    <img src="./character.png" style="width:26px;height:26px;object-fit:contain;mix-blend-mode:multiply" onerror="this.style.display='none'">
     <span class="dh-title">쩝쩝박사</span>
     <span class="dh-share">⎙</span>
   </div>
@@ -476,15 +481,12 @@
 
     <!-- ① 히어로 compact -->
     <div class="hero">
-      <svg class="hero-otter" viewBox="0 0 60 60" id="svg-hero"></svg>
+      <img src="./character_egg.png" class="hero-otter"
+           onerror="this.style.display='none';document.getElementById('svg-hero').style.display='block'">
+      <svg class="hero-otter-fallback" viewBox="0 0 60 60" id="svg-hero" style="display:none"></svg>
       <div class="hero-text">
         <div class="hero-sub">🔬 쩝쩝박사가 이번 주 트렌드를 분석했어요</div>
         <div class="hero-main">요즘 SNS 난리난 <b>마늘쫑 비빔밥</b>!<br>레시피부터 재료까지 한번에 알려드릴게요</div>
-        <div class="hero-pills">
-          <span class="pill">📹 유튜브 <b>147건</b></span>
-          <span class="pill">📰 네이버 <b>112건</b></span>
-          <span class="pill">🔥 급상승 <b>1위</b></span>
-        </div>
       </div>
     </div>
 
@@ -493,6 +495,11 @@
       <div class="trend-badge">🔥 이번 주 푸드 트렌드</div>
       <div class="why-title">마늘쫑 비빔밥이 왜 난리났을까요?</div>
       <div class="why-desc">아삭아삭한 마늘쫑에 양념장 비벼먹는 맛이 SNS에서 화제예요. "급식의사 파파팜" 유튜브 쇼츠에서 레시피가 폭발적으로 퍼지며 일주일 새 조회수 300만을 넘었고, 만들기 쉬운 간단 레시피로 홈쿡족들이 앞다퉈 도전 중이에요.</div>
+      <div class="why-stats">
+        <span class="pill">📹 유튜브 <b>147건</b></span>
+        <span class="pill">📰 네이버 <b>112건</b></span>
+        <span class="pill">🔥 급상승 <b>1위</b></span>
+      </div>
     </div>
 
     <!-- ③ 레시피 -->
@@ -774,9 +781,9 @@
   <div class="detail-bottom">
     <div class="cta-count" onclick="showToast('장바구니로 이동합니다 🛒')">
       🛒
-      <div class="cart-badge" id="cart-badge">0</div>
+      <div class="cart-badge" id="cart-badge" style="display:none">0</div>
     </div>
-    <button class="cta-main" onclick="addAll()">재료 전체 담기</button>
+    <button class="cta-main" id="cta-btn" onclick="ctaAction()">재료 전체 담기 (5가지)</button>
   </div>
 
   <div class="toast" id="toast"></div>
@@ -785,7 +792,7 @@
 </div>
 
 <script>
-  // 해달 SVG 주입 (SVG 네임스페이스 방식)
+  // SVG 폴백 (이미지 로드 실패 시)
   (function() {
     const NS = 'http://www.w3.org/2000/svg';
     function mk(tag, attrs) {
@@ -794,45 +801,77 @@
       return el;
     }
     function drawOtter(svg) {
-      const shapes = [
-        // Chef hat brim
-        [mk('rect', {x:13,y:19,width:34,height:6,rx:3,fill:'#fff',stroke:'#ccc','stroke-width':1.2})],
-        // Chef hat puff
-        [mk('ellipse', {cx:30,cy:11,rx:13,ry:11,fill:'#fff',stroke:'#ccc','stroke-width':1.2})],
-        [mk('path', {d:'M17 19 Q30 22 43 19',stroke:'#ccc','stroke-width':1,fill:'none'})],
-        // Ears
-        [mk('circle',{cx:12,cy:33,r:6,fill:'#8B5E3C'})],
-        [mk('circle',{cx:12,cy:33,r:3.5,fill:'#C49070'})],
-        [mk('circle',{cx:48,cy:33,r:6,fill:'#8B5E3C'})],
-        [mk('circle',{cx:48,cy:33,r:3.5,fill:'#C49070'})],
-        // Face
-        [mk('circle',{cx:30,cy:40,r:17,fill:'#8B5E3C'})],
-        // Muzzle
-        [mk('ellipse',{cx:30,cy:46,rx:10,ry:7,fill:'#C49070'})],
-        // Eyes
-        [mk('circle',{cx:23,cy:37,r:3.5,fill:'#1a0a00'})],
-        [mk('circle',{cx:37,cy:37,r:3.5,fill:'#1a0a00'})],
-        [mk('circle',{cx:24,cy:35.8,r:1.3,fill:'white'})],
-        [mk('circle',{cx:38,cy:35.8,r:1.3,fill:'white'})],
-        // Nose
-        [mk('ellipse',{cx:30,cy:43,rx:3,ry:2,fill:'#1a0a00'})],
-        // Smile
-        [mk('path',{d:'M25 47 Q30 52 35 47',stroke:'#1a0a00','stroke-width':1.5,fill:'none','stroke-linecap':'round'})],
-        // Whiskers
-        [mk('line',{x1:15,y1:44,x2:24,y2:45,stroke:'#6b4226','stroke-width':0.9,'stroke-linecap':'round'})],
-        [mk('line',{x1:15,y1:47,x2:24,y2:47,stroke:'#6b4226','stroke-width':0.9,'stroke-linecap':'round'})],
-        [mk('line',{x1:45,y1:44,x2:36,y2:45,stroke:'#6b4226','stroke-width':0.9,'stroke-linecap':'round'})],
-        [mk('line',{x1:45,y1:47,x2:36,y2:47,stroke:'#6b4226','stroke-width':0.9,'stroke-linecap':'round'})],
-      ];
-      shapes.forEach(([el]) => svg.appendChild(el));
+      [
+        mk('rect',{x:13,y:19,width:34,height:6,rx:3,fill:'#fff',stroke:'#ccc','stroke-width':1.2}),
+        mk('ellipse',{cx:30,cy:11,rx:13,ry:11,fill:'#fff',stroke:'#ccc','stroke-width':1.2}),
+        mk('path',{d:'M17 19 Q30 22 43 19',stroke:'#ccc','stroke-width':1,fill:'none'}),
+        mk('circle',{cx:12,cy:33,r:6,fill:'#8B5E3C'}),mk('circle',{cx:12,cy:33,r:3.5,fill:'#C49070'}),
+        mk('circle',{cx:48,cy:33,r:6,fill:'#8B5E3C'}),mk('circle',{cx:48,cy:33,r:3.5,fill:'#C49070'}),
+        mk('circle',{cx:30,cy:40,r:17,fill:'#8B5E3C'}),
+        mk('ellipse',{cx:30,cy:46,rx:10,ry:7,fill:'#C49070'}),
+        mk('circle',{cx:23,cy:37,r:3.5,fill:'#1a0a00'}),mk('circle',{cx:37,cy:37,r:3.5,fill:'#1a0a00'}),
+        mk('circle',{cx:24,cy:35.8,r:1.3,fill:'white'}),mk('circle',{cx:38,cy:35.8,r:1.3,fill:'white'}),
+        mk('ellipse',{cx:30,cy:43,rx:3,ry:2,fill:'#1a0a00'}),
+        mk('path',{d:'M25 47 Q30 52 35 47',stroke:'#1a0a00','stroke-width':1.5,fill:'none','stroke-linecap':'round'}),
+      ].forEach(el => svg.appendChild(el));
     }
-    ['svg-bubble','svg-header','svg-hero'].forEach(id => {
+    ['svg-bubble','svg-hero'].forEach(id => {
       const el = document.getElementById(id);
       if (el) drawOtter(el);
     });
   })();
 
+  // ── 상품 선택 로직 ──
+  const RECIPE_IDS = ['c1','c2','c3','c4','c5'];
   const cartSet = new Set();
+
+  function toggleCart(id, checkEl) {
+    if (cartSet.has(id)) {
+      cartSet.delete(id);
+      checkEl.classList.remove('checked');
+    } else {
+      cartSet.add(id);
+      checkEl.classList.add('checked');
+    }
+    updateUI();
+  }
+
+  function ctaAction() {
+    const selected = RECIPE_IDS.filter(id => cartSet.has(id));
+    if (selected.length === 0) {
+      // 아무것도 선택 안 했으면 전체 담기
+      addAll();
+    } else {
+      showToast(`선택한 재료 ${selected.length}가지를 담았어요! 🛒`);
+    }
+  }
+
+  function addAll() {
+    RECIPE_IDS.forEach(id => {
+      cartSet.add(id);
+      const el = document.getElementById(id);
+      if (el) el.classList.add('checked');
+    });
+    updateUI();
+    showToast('마늘쫑 비빔밥 재료 5가지를 모두 담았어요! 🧄');
+  }
+
+  function updateUI() {
+    const total = cartSet.size;
+    const badge = document.getElementById('cart-badge');
+    const btn = document.getElementById('cta-btn');
+    badge.textContent = total;
+    badge.style.display = total > 0 ? 'flex' : 'none';
+
+    const selected = RECIPE_IDS.filter(id => cartSet.has(id));
+    if (selected.length === 0) {
+      btn.textContent = '재료 전체 담기 (5가지)';
+    } else if (selected.length === RECIPE_IDS.length) {
+      btn.textContent = '선택한 재료 담기 (전체 5가지)';
+    } else {
+      btn.textContent = `선택한 재료 담기 (${selected.length}/${RECIPE_IDS.length}가지)`;
+    }
+  }
 
   function closeBubble(e) {
     e.stopPropagation();
@@ -845,35 +884,6 @@
     p.style.transition = 'transform 0.2s';
     p.style.transform = 'scale(1.015)';
     setTimeout(() => p.style.transform = '', 250);
-  }
-
-  function toggleCart(id, el) {
-    if (cartSet.has(id)) {
-      cartSet.delete(id);
-      el.classList.remove('checked');
-    } else {
-      cartSet.add(id);
-      el.classList.add('checked');
-      showToast('장바구니에 담았어요!');
-    }
-    updateBadge();
-  }
-
-  function addAll() {
-    ['c1','c2','c3','c4','c5'].forEach(id => {
-      const key = id;
-      if (!cartSet.has(key)) {
-        cartSet.add(key);
-        const el = document.getElementById(id);
-        if (el) el.classList.add('checked');
-      }
-    });
-    updateBadge();
-    showToast('마늘쫑 비빔밥 재료 5가지를 모두 담았어요! 🧄');
-  }
-
-  function updateBadge() {
-    document.getElementById('cart-badge').textContent = cartSet.size;
   }
 
   function showToast(msg) {
