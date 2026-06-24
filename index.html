@@ -100,44 +100,33 @@
     .l1-item { border-bottom: 1px solid #f7f7f7; }
     .l1-header {
       display: flex; align-items: center; padding: 0 16px;
-      user-select: none; min-height: 52px;
+      user-select: none; min-height: 52px; cursor: pointer;
     }
-    /* 필터 선택 영역 (체크박스+이름) */
-    .l1-filter-zone {
-      display: flex; align-items: center; flex: 1; gap: 12px;
-      padding: 14px 0; cursor: pointer;
-    }
-    .l1-filter-zone:active { opacity: 0.7; }
-    /* 펼치기 영역 (카운트+화살표) */
-    .l1-expand-zone {
-      display: flex; align-items: center; gap: 6px;
-      padding: 14px 0 14px 12px; cursor: pointer; flex-shrink: 0;
-    }
-    .l1-expand-zone:active { opacity: 0.7; }
-    .l1-name { font-size: 15px; font-weight: 500; color: #222; }
+    .l1-header:active { opacity: 0.7; }
+    .l1-name { font-size: 15px; font-weight: 500; color: #222; flex: 1; }
     .l1-name.on { color: #6B21A8; font-weight: 700; }
     .l1-name.partial { color: #6B21A8; }
-    .l1-count { font-size: 14px; color: #bbb; font-weight: 400; }
+    .l1-count { font-size: 14px; color: #bbb; font-weight: 400; margin-right: 6px; }
     .l1-arrow { color: #bbb; font-size: 11px; transition: transform 0.2s; display: inline-block; }
     .l1-arrow.open { transform: rotate(180deg); }
+
+    /* L1 내 전체 항목 */
+    .l1-all-row {
+      display: flex; align-items: center; padding: 10px 16px 10px 28px;
+      gap: 10px; cursor: pointer; user-select: none;
+    }
+    .l1-all-row:active { opacity: 0.7; }
+    .l1-all-name { font-size: 14px; color: #444; flex: 1; }
+    .l1-all-name.on { color: #6B21A8; font-weight: 600; }
 
     /* L2 */
     .l2-list { display: none; }
     .l2-list.open { display: block; }
     .l2-header {
-      display: flex; align-items: center; padding: 0 16px 0 42px;
-      user-select: none; min-height: 42px;
+      display: flex; align-items: center; padding: 0 16px 0 28px;
+      user-select: none; min-height: 44px; cursor: pointer;
     }
-    .l2-filter-zone {
-      display: flex; align-items: center; flex: 1; gap: 8px;
-      padding: 10px 0; cursor: pointer;
-    }
-    .l2-filter-zone:active { opacity: 0.7; }
-    .l2-expand-zone {
-      display: flex; align-items: center; gap: 4px;
-      padding: 10px 0 10px 10px; cursor: pointer; flex-shrink: 0;
-    }
-    .l2-expand-zone:active { opacity: 0.7; }
+    .l2-header:active { opacity: 0.7; }
     .l-ind { color: #ccc; font-size: 13px; flex-shrink: 0; margin-right: 2px; font-family: monospace; }
     .folder-icon { font-size: 14px; color: #bbb; flex-shrink: 0; }
     .chk-btn {
@@ -162,7 +151,7 @@
     .l3-list { display: none; }
     .l3-list.open { display: block; }
     .l3-item {
-      display: flex; align-items: center; padding: 8px 16px 8px 58px;
+      display: flex; align-items: center; padding: 8px 16px 8px 44px;
       cursor: pointer; gap: 8px; user-select: none;
     }
     .l3-item:active { background: #fafafa; }
@@ -481,11 +470,7 @@ function onAllClick() {
   render();
 }
 
-function onL1FilterClick(id) {
-  toggleFilter(id);
-  render();
-}
-
+// L1 헤더 클릭 → 펼치기/접기만
 function onL1ExpandClick(id) {
   if (state.openL1 === id) {
     state.openL1 = null;
@@ -496,22 +481,14 @@ function onL1ExpandClick(id) {
   render();
 }
 
-function onL2FilterClick(id) {
-  const l1Id = nodes[id].parentId;
-  if (state.openL1 !== l1Id) {
-    state.openL1 = l1Id;
-    state.openL2s.clear();
-  }
+// L1 내 "전체" 클릭 → L1 필터 토글
+function onL1AllClick(id) {
   toggleFilter(id);
   render();
 }
 
+// L2 헤더 클릭 → 펼치기/접기만 (선택 없음)
 function onL2ExpandClick(id) {
-  const l1Id = nodes[id].parentId;
-  if (state.openL1 !== l1Id) {
-    state.openL1 = l1Id;
-    state.openL2s.clear();
-  }
   if (state.openL2s.has(id)) state.openL2s.delete(id);
   else state.openL2s.add(id);
   render();
@@ -519,11 +496,6 @@ function onL2ExpandClick(id) {
 
 function onL3Click(id) {
   const l2Id = nodes[id].parentId;
-  const l1Id = nodes[l2Id].parentId;
-  if (state.openL1 !== l1Id) {
-    state.openL1 = l1Id;
-    state.openL2s.clear();
-  }
   state.openL2s.add(l2Id);
   toggleFilter(id);
   render();
@@ -630,8 +602,6 @@ function renderList() {
   const list = document.getElementById('cat-list');
   list.innerHTML = '';
 
-
-
   DATA.forEach(l1 => {
     const isOpen = state.openL1 === l1.id;
     const l1State = getSelectState(l1.id);
@@ -639,35 +609,32 @@ function renderList() {
     const l1El = document.createElement('div');
     l1El.className = 'l1-item';
 
+    // L1 헤더: 전체 클릭 → 펼치기/접기
     const h1 = document.createElement('div');
     h1.className = 'l1-header';
-
-    // 필터 영역 (체크박스 + 이름)
-    const filterZone = document.createElement('div');
-    filterZone.className = 'l1-filter-zone';
-    filterZone.innerHTML = `
-      <div class="chk-btn ${l1State}"></div>
+    h1.innerHTML = `
       <div class="l1-name ${l1State !== 'off' ? l1State : ''}">${l1.name}</div>
-    `;
-    filterZone.addEventListener('click', () => onL1FilterClick(l1.id));
-
-    // 펼치기 영역 (카운트 배지 + 화살표)
-    const expandZone = document.createElement('div');
-    expandZone.className = 'l1-expand-zone';
-    expandZone.innerHTML = `
       <span class="l1-count">${l1.count}</span>
       <span class="l1-arrow ${isOpen ? 'open' : ''}">▼</span>
     `;
-    expandZone.addEventListener('click', () => onL1ExpandClick(l1.id));
-
-    h1.appendChild(filterZone);
-    h1.appendChild(expandZone);
+    h1.addEventListener('click', () => onL1ExpandClick(l1.id));
     l1El.appendChild(h1);
 
     if (isOpen) {
       const l2ListEl = document.createElement('div');
       l2ListEl.className = 'l2-list open';
 
+      // "전체" 행
+      const allRow = document.createElement('div');
+      allRow.className = 'l1-all-row';
+      allRow.innerHTML = `
+        <div class="chk-btn ${l1State === 'on' ? 'on' : ''}"></div>
+        <div class="l1-all-name ${l1State === 'on' ? 'on' : ''}">전체</div>
+      `;
+      allRow.addEventListener('click', () => onL1AllClick(l1.id));
+      l2ListEl.appendChild(allRow);
+
+      // L2 항목들: 클릭 → 펼치기/접기만
       l1.children.forEach(l2 => {
         const isL2Open = state.openL2s.has(l2.id);
         const l2State = getSelectState(l2.id);
@@ -677,30 +644,15 @@ function renderList() {
 
         const h2 = document.createElement('div');
         h2.className = 'l2-header';
-
-        const l2FilterZone = document.createElement('div');
-        l2FilterZone.className = 'l2-filter-zone';
-        l2FilterZone.innerHTML = `
-          <span class="l-ind">└</span>
-          <span class="folder-icon">📁</span>
-          <div class="chk-btn ${l2State}"></div>
-          <div class="l2-name ${l2State !== 'off' ? l2State : ''}">${l2.name}</div>
-        `;
-        l2FilterZone.addEventListener('click', () => onL2FilterClick(l2.id));
-
-        const l2ExpandZone = document.createElement('div');
-        l2ExpandZone.className = 'l2-expand-zone';
-        l2ExpandZone.innerHTML = `
+        h2.innerHTML = `
+          <div class="l2-name ${l2State !== 'off' ? l2State : ''}" style="flex:1;font-size:14px;color:#444;">${l2.name}</div>
           <span class="l2-count">${l2.count}</span>
           <span class="l2-arrow ${isL2Open ? 'open' : ''}">▼</span>
         `;
-        l2ExpandZone.addEventListener('click', () => onL2ExpandClick(l2.id));
-
-        h2.appendChild(l2FilterZone);
-        h2.appendChild(l2ExpandZone);
+        h2.addEventListener('click', () => onL2ExpandClick(l2.id));
         l2El.appendChild(h2);
 
-        // L3 list (only when L2 open)
+        // L3 리스트 (L2 펼쳤을 때)
         if (isL2Open) {
           const l3ListEl = document.createElement('div');
           l3ListEl.className = 'l3-list open';
@@ -711,8 +663,6 @@ function renderList() {
             const l3El = document.createElement('div');
             l3El.className = 'l3-item';
             l3El.innerHTML = `
-              <span class="l-ind" style="visibility:hidden">└</span>
-              <span class="l-ind">└</span>
               <div class="chk-btn ${isL3Selected ? 'on' : ''}"></div>
               <div class="l3-name ${isL3Selected ? 'on' : ''}">${l3.name}</div>
               <span class="l3-count">${l3.count}</span>
